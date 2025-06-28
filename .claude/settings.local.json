@@ -5,7 +5,8 @@
       "Bash(claude config set --global preferredNotifChannel terminal_bell)",
       "Bash(git init:*)",
       "Bash(git remote add:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }
