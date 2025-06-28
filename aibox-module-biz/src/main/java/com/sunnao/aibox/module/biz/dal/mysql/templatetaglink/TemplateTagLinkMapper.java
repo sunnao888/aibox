@@ -2,6 +2,7 @@ package com.sunnao.aibox.module.biz.dal.mysql.templatetaglink;
 
 import java.util.*;
 
+import cn.hutool.core.collection.CollUtil;
 import com.sunnao.aibox.framework.common.pojo.PageResult;
 import com.sunnao.aibox.framework.mybatis.core.query.LambdaQueryWrapperX;
 import com.sunnao.aibox.framework.mybatis.core.mapper.BaseMapperX;
@@ -33,6 +34,18 @@ public interface TemplateTagLinkMapper extends BaseMapperX<TemplateTagLinkDO> {
     default void deleteByTemplateId(Long templateId) {
         delete(new LambdaQueryWrapperX<TemplateTagLinkDO>()
                 .eq(TemplateTagLinkDO::getTemplateId, templateId));
+    }
+
+    default List<Long> selectTemplateIdsByTagIds(List<Long> tagIds) {
+        if (CollUtil.isEmpty(tagIds)) {
+            return new ArrayList<>();
+        }
+        List<TemplateTagLinkDO> links = selectList(new LambdaQueryWrapperX<TemplateTagLinkDO>()
+                .in(TemplateTagLinkDO::getTagId, tagIds));
+        return links.stream()
+                .map(TemplateTagLinkDO::getTemplateId)
+                .distinct()
+                .collect(java.util.stream.Collectors.toList());
     }
 
 }

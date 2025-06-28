@@ -1,6 +1,7 @@
 package com.sunnao.aibox.module.biz.service.template;
 
 import cn.hutool.core.collection.CollUtil;
+import com.sunnao.aibox.framework.mybatis.core.query.LambdaQueryWrapperX;
 import org.springframework.stereotype.Service;
 import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +15,7 @@ import com.sunnao.aibox.framework.common.pojo.PageParam;
 import com.sunnao.aibox.framework.common.util.object.BeanUtils;
 
 import com.sunnao.aibox.module.biz.dal.mysql.template.TemplateMapper;
+import com.sunnao.aibox.module.biz.dal.mysql.templatetaglink.TemplateTagLinkMapper;
 import com.sunnao.aibox.module.biz.service.templatetaglink.TemplateTagLinkService;
 
 import static com.sunnao.aibox.framework.common.exception.util.ServiceExceptionUtil.exception;
@@ -35,6 +37,9 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Resource
     private TemplateTagLinkService templateTagLinkService;
+    
+    @Resource
+    private TemplateTagLinkMapper templateTagLinkMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -120,4 +125,29 @@ public class TemplateServiceImpl implements TemplateService {
         return templateMapper.selectPage(pageReqVO);
     }
 
+    @Override
+    public List<TemplateDO> getRecommendTemplate(TemplateRecommendReqVO reqVO) {
+        // 如果没有传入标签ID，直接根据名称和类型查询
+        if (CollUtil.isEmpty(reqVO.getTagIds())) {
+            return templateMapper.selectList(new LambdaQueryWrapperX<TemplateDO>()
+                    .likeIfPresent(TemplateDO::getName, reqVO.getName())
+                    .eqIfPresent(TemplateDO::getType, reqVO.getType())
+                    .orderByDesc(TemplateDO::getCreateTime));
+        }
+        
+        // 如果传入了标签ID，需要先查询包含这些标签的模板ID
+        List<Long> templateIds = templateTagLinkMapper.selectTemplateIdsByTagIds(reqVO.getTagIds());
+        
+        // 如果没有找到匹配标签的模板，返回空列表
+        if (CollUtil.isEmpty(templateIds)) {
+            return new ArrayList<>();
+        }
+        
+        // 根据模板ID、名称和类型查询模板
+        return templateMapper.selectList(new LambdaQueryWrapperX<TemplateDO>()
+                .in(TemplateDO::getId, templateIds)
+                .likeIfPresent(TemplateDO::getName, reqVO.getName())
+                .eqIfPresent(TemplateDO::getType, reqVO.getType())
+                .orderByDesc(TemplateDO::getCreateTime));
+    }
 }

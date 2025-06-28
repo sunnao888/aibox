@@ -14,15 +14,9 @@ public class ReportGenerateReqVO {
     @DiffLogField(name = "报告类型")
     private String type;
 
-    @Schema(description = "输入示例", requiredMode = Schema.RequiredMode.REQUIRED, example = "今天完成了项目A的需求分析")
-    @NotBlank(message = "输入示例不能为空")
-    @DiffLogField(name = "输入示例")
-    private String inputCase;
-
-    @Schema(description = "输出示例", requiredMode = Schema.RequiredMode.REQUIRED, example = "今天完成了项目A的需求分析，提出了3个关键改进建议")
-    @NotBlank(message = "输出示例不能为空")
-    @DiffLogField(name = "输出示例")
-    private String outputCase;
+    @Schema(description = "模板id", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "今天完成了项目A的需求分析")
+    @DiffLogField(name = "模板id")
+    private Long templateId;
 
     @Schema(description = "用户消息", requiredMode = Schema.RequiredMode.REQUIRED, example = "今天完成了项目A的需求分析，提出了3个关键改进建议")
     @NotBlank(message = "用户消息不能为空")
