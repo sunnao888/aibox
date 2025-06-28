@@ -59,4 +59,27 @@ public interface TemplateTagLinkService {
      */
     PageResult<TemplateTagLinkDO> getTemplateTagLinkPage(TemplateTagLinkPageReqVO pageReqVO);
 
+    /**
+     * 为模板关联标签
+     *
+     * @param templateId 模板ID
+     * @param tagIds 标签ID列表
+     */
+    void createTemplateTagLinks(Long templateId, List<Long> tagIds);
+
+    /**
+     * 删除模板的所有标签关联
+     *
+     * @param templateId 模板ID
+     */
+    void deleteTemplateTagLinksByTemplateId(Long templateId);
+
+    /**
+     * 根据模板ID获取标签ID列表
+     *
+     * @param templateId 模板ID
+     * @return 标签ID列表
+     */
+    List<Long> getTagIdsByTemplateId(Long templateId);
+
 }

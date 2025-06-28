@@ -89,4 +89,16 @@ public class TagServiceImpl implements TagService {
         return tagMapper.selectPage(pageReqVO);
     }
 
+    @Override
+    public List<TagDO> getTagListByIds(List<Long> ids) {
+        if (CollUtil.isEmpty(ids)) {
+            return new ArrayList<>();
+        }
+        return tagMapper.selectByIds(ids);
+    }
+
+    @Override
+    public List<TagDO> getEnableTagList() {
+        return tagMapper.getEnableTagList();
+    }
 }

@@ -1,33 +1,31 @@
 package com.sunnao.aibox.module.biz.controller.admin.tag;
 
-import org.springframework.web.bind.annotation.*;
-import jakarta.annotation.Resource;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Operation;
-
-import jakarta.validation.constraints.*;
-import jakarta.validation.*;
-import jakarta.servlet.http.*;
-import java.util.*;
-import java.io.IOException;
-
+import com.sunnao.aibox.framework.apilog.core.annotation.ApiAccessLog;
+import com.sunnao.aibox.framework.common.pojo.CommonResult;
 import com.sunnao.aibox.framework.common.pojo.PageParam;
 import com.sunnao.aibox.framework.common.pojo.PageResult;
-import com.sunnao.aibox.framework.common.pojo.CommonResult;
 import com.sunnao.aibox.framework.common.util.object.BeanUtils;
-import static com.sunnao.aibox.framework.common.pojo.CommonResult.success;
-
 import com.sunnao.aibox.framework.excel.core.util.ExcelUtils;
-
-import com.sunnao.aibox.framework.apilog.core.annotation.ApiAccessLog;
-import static com.sunnao.aibox.framework.apilog.core.enums.OperateTypeEnum.*;
-
-import com.sunnao.aibox.module.biz.controller.admin.tag.vo.*;
+import com.sunnao.aibox.module.biz.controller.admin.tag.vo.TagPageReqVO;
+import com.sunnao.aibox.module.biz.controller.admin.tag.vo.TagRespVO;
+import com.sunnao.aibox.module.biz.controller.admin.tag.vo.TagSaveReqVO;
 import com.sunnao.aibox.module.biz.dal.dataobject.tag.TagDO;
 import com.sunnao.aibox.module.biz.service.tag.TagService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.List;
+
+import static com.sunnao.aibox.framework.apilog.core.enums.OperateTypeEnum.EXPORT;
+import static com.sunnao.aibox.framework.common.pojo.CommonResult.success;
 
 @Tag(name = "管理后台 - 标签")
 @RestController
@@ -65,7 +63,7 @@ public class TagController {
     @DeleteMapping("/delete-list")
     @Parameter(name = "ids", description = "编号", required = true)
     @Operation(summary = "批量删除标签")
-                @PreAuthorize("@ss.hasPermission('biz:tag:delete')")
+    @PreAuthorize("@ss.hasPermission('biz:tag:delete')")
     public CommonResult<Boolean> deleteTagList(@RequestParam("ids") List<Long> ids) {
         tagService.deleteTagListByIds(ids);
         return success(true);
@@ -93,12 +91,20 @@ public class TagController {
     @PreAuthorize("@ss.hasPermission('biz:tag:export')")
     @ApiAccessLog(operateType = EXPORT)
     public void exportTagExcel(@Valid TagPageReqVO pageReqVO,
-              HttpServletResponse response) throws IOException {
+                               HttpServletResponse response) throws IOException {
         pageReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<TagDO> list = tagService.getTagPage(pageReqVO).getList();
         // 导出 Excel
         ExcelUtils.write(response, "标签.xls", "数据", TagRespVO.class,
-                        BeanUtils.toBean(list, TagRespVO.class));
+                BeanUtils.toBean(list, TagRespVO.class));
+    }
+
+    @GetMapping("/all")
+    @Operation(summary = "获得全部标签列表")
+    @PreAuthorize("@ss.hasPermission('biz:tag:query')")
+    public CommonResult<List<TagRespVO>> getAllTag() {
+        List<TagDO> list = tagService.getEnableTagList();
+        return success(BeanUtils.toBean(list, TagRespVO.class));
     }
 
 }

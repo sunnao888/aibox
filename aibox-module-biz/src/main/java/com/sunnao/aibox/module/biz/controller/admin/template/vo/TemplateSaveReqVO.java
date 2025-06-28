@@ -9,8 +9,12 @@ import jakarta.validation.constraints.*;
 @Data
 public class TemplateSaveReqVO {
 
-    @Schema(description = "用户ID", requiredMode = Schema.RequiredMode.REQUIRED, example = "20383")
+    @Schema(description = "主键", requiredMode = Schema.RequiredMode.REQUIRED, example = "20383")
     private Long id;
+
+    @Schema(description = "模板名称", requiredMode = Schema.RequiredMode.REQUIRED, example = "用户注册模板")
+    @NotEmpty(message = "模板名称不能为空")
+    private String name;
 
     @Schema(description = "模板类型", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
     @NotNull(message = "模板类型不能为空")
@@ -23,5 +27,8 @@ public class TemplateSaveReqVO {
     @Schema(description = "输出用例", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "输出用例不能为空")
     private String output;
+
+    @Schema(description = "标签ID列表", example = "[1, 2, 3]")
+    private List<Long> tagIds;
 
 }

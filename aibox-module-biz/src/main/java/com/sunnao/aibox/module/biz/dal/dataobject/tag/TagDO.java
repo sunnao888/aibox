@@ -32,9 +32,8 @@ public class TagDO extends BaseDO {
      */
     private String name;
     /**
-     * 状态(0 禁用 1启用)
+     * 状态(0 启用 1禁用)
      */
-    private Boolean status;
-
+    private Integer status;
 
 }

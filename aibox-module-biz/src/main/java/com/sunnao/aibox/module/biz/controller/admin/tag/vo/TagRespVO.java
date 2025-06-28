@@ -12,8 +12,8 @@ import com.alibaba.excel.annotation.*;
 @ExcelIgnoreUnannotated
 public class TagRespVO {
 
-    @Schema(description = "用户ID", requiredMode = Schema.RequiredMode.REQUIRED, example = "14589")
-    @ExcelProperty("用户ID")
+    @Schema(description = "主键", requiredMode = Schema.RequiredMode.REQUIRED, example = "14589")
+    @ExcelProperty("主键")
     private Long id;
 
     @Schema(description = "名称", requiredMode = Schema.RequiredMode.REQUIRED, example = "张三")
@@ -22,7 +22,7 @@ public class TagRespVO {
 
     @Schema(description = "状态(0 禁用 1启用)", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
     @ExcelProperty("状态(0 禁用 1启用)")
-    private Boolean status;
+    private Integer status;
 
     @Schema(description = "创建时间", requiredMode = Schema.RequiredMode.REQUIRED)
     @ExcelProperty("创建时间")

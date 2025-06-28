@@ -26,8 +26,12 @@ import com.sunnao.aibox.framework.apilog.core.annotation.ApiAccessLog;
 import static com.sunnao.aibox.framework.apilog.core.enums.OperateTypeEnum.*;
 
 import com.sunnao.aibox.module.biz.controller.admin.template.vo.*;
+import com.sunnao.aibox.module.biz.controller.admin.tag.vo.TagRespVO;
 import com.sunnao.aibox.module.biz.dal.dataobject.template.TemplateDO;
+import com.sunnao.aibox.module.biz.dal.dataobject.tag.TagDO;
 import com.sunnao.aibox.module.biz.service.template.TemplateService;
+import com.sunnao.aibox.module.biz.service.tag.TagService;
+import com.sunnao.aibox.module.biz.service.templatetaglink.TemplateTagLinkService;
 
 @Tag(name = "管理后台 - 模板")
 @RestController
@@ -37,6 +41,12 @@ public class TemplateController {
 
     @Resource
     private TemplateService templateService;
+
+    @Resource
+    private TagService tagService;
+
+    @Resource
+    private TemplateTagLinkService templateTagLinkService;
 
     @PostMapping("/create")
     @Operation(summary = "创建模板")
@@ -77,7 +87,7 @@ public class TemplateController {
     @PreAuthorize("@ss.hasPermission('biz:template:query')")
     public CommonResult<TemplateRespVO> getTemplate(@RequestParam("id") Long id) {
         TemplateDO template = templateService.getTemplate(id);
-        return success(BeanUtils.toBean(template, TemplateRespVO.class));
+        return success(convertToRespVO(template));
     }
 
     @GetMapping("/page")
@@ -85,7 +95,10 @@ public class TemplateController {
     @PreAuthorize("@ss.hasPermission('biz:template:query')")
     public CommonResult<PageResult<TemplateRespVO>> getTemplatePage(@Valid TemplatePageReqVO pageReqVO) {
         PageResult<TemplateDO> pageResult = templateService.getTemplatePage(pageReqVO);
-        return success(BeanUtils.toBean(pageResult, TemplateRespVO.class));
+        List<TemplateRespVO> respVOList = pageResult.getList().stream()
+                .map(this::convertToRespVO)
+                .collect(java.util.stream.Collectors.toList());
+        return success(new PageResult<>(respVOList, pageResult.getTotal()));
     }
 
     @GetMapping("/export-excel")
@@ -97,8 +110,27 @@ public class TemplateController {
         pageReqVO.setPageSize(PageParam.PAGE_SIZE_NONE);
         List<TemplateDO> list = templateService.getTemplatePage(pageReqVO).getList();
         // 导出 Excel
-        ExcelUtils.write(response, "模板.xls", "数据", TemplateRespVO.class,
-                        BeanUtils.toBean(list, TemplateRespVO.class));
+        List<TemplateRespVO> respVOList = list.stream()
+                .map(this::convertToRespVO)
+                .collect(java.util.stream.Collectors.toList());
+        ExcelUtils.write(response, "模板.xls", "数据", TemplateRespVO.class, respVOList);
+    }
+
+    private TemplateRespVO convertToRespVO(TemplateDO template) {
+        if (template == null) {
+            return null;
+        }
+        
+        TemplateRespVO respVO = BeanUtils.toBean(template, TemplateRespVO.class);
+        
+        // 获取关联的标签
+        List<Long> tagIds = templateTagLinkService.getTagIdsByTemplateId(template.getId());
+        if (!tagIds.isEmpty()) {
+            List<TagDO> tags = tagService.getTagListByIds(tagIds);
+            respVO.setTags(BeanUtils.toBean(tags, TagRespVO.class));
+        }
+        
+        return respVO;
     }
 
 }

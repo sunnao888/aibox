@@ -19,6 +19,7 @@ public interface TemplateMapper extends BaseMapperX<TemplateDO> {
 
     default PageResult<TemplateDO> selectPage(TemplatePageReqVO reqVO) {
         return selectPage(reqVO, new LambdaQueryWrapperX<TemplateDO>()
+                .likeIfPresent(TemplateDO::getName, reqVO.getName())
                 .eqIfPresent(TemplateDO::getType, reqVO.getType())
                 .betweenIfPresent(TemplateDO::getCreateTime, reqVO.getCreateTime())
                 .orderByDesc(TemplateDO::getId));

@@ -17,7 +17,7 @@ public class TagPageReqVO extends PageParam {
     private String name;
 
     @Schema(description = "状态(0 禁用 1启用)", example = "2")
-    private Boolean status;
+    private Integer status;
 
     @Schema(description = "创建时间")
     @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)

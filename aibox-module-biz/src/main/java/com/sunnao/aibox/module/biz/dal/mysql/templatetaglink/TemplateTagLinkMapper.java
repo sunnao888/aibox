@@ -25,4 +25,14 @@ public interface TemplateTagLinkMapper extends BaseMapperX<TemplateTagLinkDO> {
                 .orderByDesc(TemplateTagLinkDO::getId));
     }
 
+    default List<TemplateTagLinkDO> selectByTemplateId(Long templateId) {
+        return selectList(new LambdaQueryWrapperX<TemplateTagLinkDO>()
+                .eq(TemplateTagLinkDO::getTemplateId, templateId));
+    }
+
+    default void deleteByTemplateId(Long templateId) {
+        delete(new LambdaQueryWrapperX<TemplateTagLinkDO>()
+                .eq(TemplateTagLinkDO::getTemplateId, templateId));
+    }
+
 }

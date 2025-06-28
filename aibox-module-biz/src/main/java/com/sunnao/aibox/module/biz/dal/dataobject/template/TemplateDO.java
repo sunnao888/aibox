@@ -28,6 +28,10 @@ public class TemplateDO extends BaseDO {
     @TableId
     private Long id;
     /**
+     * 模板名称
+     */
+    private String name;
+    /**
      * 模板类型
      */
     @TableField("`type`")

@@ -13,6 +13,9 @@ import static com.sunnao.aibox.framework.common.util.date.DateUtils.FORMAT_YEAR_
 @Data
 public class TemplatePageReqVO extends PageParam {
 
+    @Schema(description = "模板名称", example = "用户注册")
+    private String name;
+
     @Schema(description = "模板类型", example = "2")
     private Integer type;
 

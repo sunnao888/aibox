@@ -16,8 +16,8 @@ public class TagSaveReqVO {
     @NotEmpty(message = "名称不能为空")
     private String name;
 
-    @Schema(description = "状态(0 禁用 1启用)", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
-    @NotNull(message = "状态(0 禁用 1启用)不能为空")
-    private Boolean status;
+    @Schema(description = "状态(0 启用 1禁用)", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    @NotNull(message = "状态(0 启用 1禁用)不能为空")
+    private Integer status;
 
 }

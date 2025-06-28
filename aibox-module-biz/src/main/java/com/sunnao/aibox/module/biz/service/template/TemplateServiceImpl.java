@@ -14,6 +14,7 @@ import com.sunnao.aibox.framework.common.pojo.PageParam;
 import com.sunnao.aibox.framework.common.util.object.BeanUtils;
 
 import com.sunnao.aibox.module.biz.dal.mysql.template.TemplateMapper;
+import com.sunnao.aibox.module.biz.service.templatetaglink.TemplateTagLinkService;
 
 import static com.sunnao.aibox.framework.common.exception.util.ServiceExceptionUtil.exception;
 import static com.sunnao.aibox.framework.common.util.collection.CollectionUtils.convertList;
@@ -32,39 +33,69 @@ public class TemplateServiceImpl implements TemplateService {
     @Resource
     private TemplateMapper templateMapper;
 
+    @Resource
+    private TemplateTagLinkService templateTagLinkService;
+
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Long createTemplate(TemplateSaveReqVO createReqVO) {
-        // 插入
+        // 插入模板
         TemplateDO template = BeanUtils.toBean(createReqVO, TemplateDO.class);
         templateMapper.insert(template);
+        
+        // 关联标签
+        if (CollUtil.isNotEmpty(createReqVO.getTagIds())) {
+            templateTagLinkService.createTemplateTagLinks(template.getId(), createReqVO.getTagIds());
+        }
+        
         // 返回
         return template.getId();
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateTemplate(TemplateSaveReqVO updateReqVO) {
         // 校验存在
         validateTemplateExists(updateReqVO.getId());
-        // 更新
+        
+        // 更新模板
         TemplateDO updateObj = BeanUtils.toBean(updateReqVO, TemplateDO.class);
         templateMapper.updateById(updateObj);
+        
+        // 重新关联标签
+        templateTagLinkService.deleteTemplateTagLinksByTemplateId(updateReqVO.getId());
+        if (CollUtil.isNotEmpty(updateReqVO.getTagIds())) {
+            templateTagLinkService.createTemplateTagLinks(updateReqVO.getId(), updateReqVO.getTagIds());
+        }
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteTemplate(Long id) {
         // 校验存在
         validateTemplateExists(id);
-        // 删除
+        
+        // 删除标签关联
+        templateTagLinkService.deleteTemplateTagLinksByTemplateId(id);
+        
+        // 删除模板
         templateMapper.deleteById(id);
     }
 
     @Override
-        public void deleteTemplateListByIds(List<Long> ids) {
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteTemplateListByIds(List<Long> ids) {
         // 校验存在
         validateTemplateExists(ids);
-        // 删除
-        templateMapper.deleteByIds(ids);
+        
+        // 删除标签关联
+        for (Long id : ids) {
+            templateTagLinkService.deleteTemplateTagLinksByTemplateId(id);
         }
+        
+        // 删除模板
+        templateMapper.deleteByIds(ids);
+    }
 
     private void validateTemplateExists(List<Long> ids) {
         List<TemplateDO> list = templateMapper.selectByIds(ids);

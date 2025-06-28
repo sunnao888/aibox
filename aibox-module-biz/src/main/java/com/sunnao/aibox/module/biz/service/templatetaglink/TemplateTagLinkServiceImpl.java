@@ -89,4 +89,32 @@ public class TemplateTagLinkServiceImpl implements TemplateTagLinkService {
         return templateTagLinkMapper.selectPage(pageReqVO);
     }
 
+    @Override
+    public void createTemplateTagLinks(Long templateId, List<Long> tagIds) {
+        if (CollUtil.isEmpty(tagIds)) {
+            return;
+        }
+        
+        List<TemplateTagLinkDO> links = new ArrayList<>();
+        for (Long tagId : tagIds) {
+            TemplateTagLinkDO link = TemplateTagLinkDO.builder()
+                    .templateId(templateId)
+                    .tagId(tagId)
+                    .build();
+            links.add(link);
+        }
+        templateTagLinkMapper.insertBatch(links);
+    }
+
+    @Override
+    public void deleteTemplateTagLinksByTemplateId(Long templateId) {
+        templateTagLinkMapper.deleteByTemplateId(templateId);
+    }
+
+    @Override
+    public List<Long> getTagIdsByTemplateId(Long templateId) {
+        List<TemplateTagLinkDO> links = templateTagLinkMapper.selectByTemplateId(templateId);
+        return convertList(links, TemplateTagLinkDO::getTagId);
+    }
+
 }

@@ -59,4 +59,19 @@ public interface TagService {
      */
     PageResult<TagDO> getTagPage(TagPageReqVO pageReqVO);
 
+    /**
+     * 根据ID列表获取标签列表
+     *
+     * @param ids 标签ID列表
+     * @return 标签列表
+     */
+    List<TagDO> getTagListByIds(List<Long> ids);
+
+    /**
+     * 获取全部标签列表
+     *
+     * @return 标签列表
+     */
+    List<TagDO> getEnableTagList();
+
 }
