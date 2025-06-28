@@ -1,0 +1,18 @@
+{
+  "groups": [
+    {
+      "name": "aibox.cache",
+      "type": "com.sunnao.aibox.framework.redis.config.OpenOjCacheProperties",
+      "sourceType": "com.sunnao.aibox.framework.redis.config.OpenOjCacheProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "aibox.cache.redis-scan-batch-size",
+      "type": "java.lang.Integer",
+      "description": "redis scan 一次返回数量",
+      "sourceType": "com.sunnao.aibox.framework.redis.config.OpenOjCacheProperties"
+    }
+  ],
+  "hints": []
+}

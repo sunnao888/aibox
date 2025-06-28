@@ -1,0 +1,11 @@
+{
+  "groups": [
+    {
+      "name": "aibox.tracer",
+      "type": "com.sunnao.aibox.framework.tracer.config.TracerProperties",
+      "sourceType": "com.sunnao.aibox.framework.tracer.config.TracerProperties"
+    }
+  ],
+  "properties": [],
+  "hints": []
+}

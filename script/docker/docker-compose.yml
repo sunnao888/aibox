@@ -1,0 +1,44 @@
+networks:
+  aibox:
+    driver: bridge
+
+volumes:
+  mysql-data: {}
+  redis-data: {}
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: aibox-mysql
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_general_ci"
+      - "--explicit_defaults_for_timestamp=true"
+      - "--lower_case_table_names=1"
+    networks:
+      - aibox
+
+  redis:
+    image: redis:7
+    container_name: aibox-redis
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --requirepass 123456
+      - --appendonly yes
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - aibox

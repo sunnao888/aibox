@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-biz-data-permission/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-biz-data-permission/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-biz-ip/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-biz-ip/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-excel/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-excel/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-job/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-job/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-monitor/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-monitor/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-mq/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-mq/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-mybatis/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-mybatis/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-protection/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-protection/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-redis/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-redis/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-security/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-security/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-web/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-websocket/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/aibox-spring-boot-starter-websocket/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-framework/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-module-ai/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-module-ai/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-module-biz/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-module-biz/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-module-infra/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-module-infra/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-module-system/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-module-system/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aibox-server/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

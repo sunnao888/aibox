@@ -1,0 +1,3 @@
+com.sunnao.aibox.framework.security.config.OpenOjSecurityAutoConfiguration
+com.sunnao.aibox.framework.security.config.OpenOjWebSecurityConfigurerAdapter
+com.sunnao.aibox.framework.operatelog.config.OpenOjOperateLogConfiguration

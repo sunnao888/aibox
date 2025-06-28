@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  com.sunnao.aibox.framework.mybatis.config.IdTypeEnvironmentPostProcessor

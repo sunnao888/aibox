@@ -1,0 +1,3 @@
+com.sunnao.aibox.framework.mq.redis.config.OpenOjRedisMQProducerAutoConfiguration
+com.sunnao.aibox.framework.mq.redis.config.OpenOjRedisMQConsumerAutoConfiguration
+com.sunnao.aibox.framework.mq.rabbitmq.config.OpenOjRabbitMQAutoConfiguration

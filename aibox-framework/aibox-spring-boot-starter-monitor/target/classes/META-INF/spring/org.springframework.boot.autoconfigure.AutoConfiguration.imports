@@ -1,0 +1,2 @@
+com.sunnao.aibox.framework.tracer.config.OpenOjTracerAutoConfiguration
+com.sunnao.aibox.framework.tracer.config.OpenOjMetricsAutoConfiguration

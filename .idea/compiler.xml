@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Annotation profile for aibox" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-configuration-processor/3.4.5/spring-boot-configuration-processor-3.4.5.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.6.3/mapstruct-processor-1.6.3.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.6.3/mapstruct-1.6.3.jar" />
+        </processorPath>
+        <module name="aibox-spring-boot-starter-monitor" />
+        <module name="aibox-spring-boot-starter-job" />
+        <module name="aibox-server" />
+        <module name="aibox-module-system" />
+        <module name="aibox-spring-boot-starter-mq" />
+        <module name="aibox-spring-boot-starter-web" />
+        <module name="aibox-spring-boot-starter-websocket" />
+        <module name="aibox-spring-boot-starter-biz-ip" />
+        <module name="aibox-spring-boot-starter-mybatis" />
+        <module name="aibox-spring-boot-starter-excel" />
+        <module name="aibox-spring-boot-starter-security" />
+        <module name="aibox-module-infra" />
+        <module name="aibox-spring-boot-starter-redis" />
+        <module name="aibox-spring-boot-starter-protection" />
+        <module name="aibox-module-biz" />
+        <module name="aibox-spring-boot-starter-biz-data-permission" />
+        <module name="aibox-common" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="aibox-module-ai" target="21" />
+      <module name="aibox-spring-boot-starter-ai" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="aibox-common" options="-parameters" />
+      <module name="aibox-module-ai" options="-parameters" />
+      <module name="aibox-module-biz" options="-parameters" />
+      <module name="aibox-module-infra" options="-parameters" />
+      <module name="aibox-module-system" options="-parameters" />
+      <module name="aibox-server" options="-parameters" />
+      <module name="aibox-spring-boot-starter-biz-data-permission" options="-parameters" />
+      <module name="aibox-spring-boot-starter-biz-ip" options="-parameters" />
+      <module name="aibox-spring-boot-starter-excel" options="-parameters" />
+      <module name="aibox-spring-boot-starter-job" options="-parameters" />
+      <module name="aibox-spring-boot-starter-monitor" options="-parameters" />
+      <module name="aibox-spring-boot-starter-mq" options="-parameters" />
+      <module name="aibox-spring-boot-starter-mybatis" options="-parameters" />
+      <module name="aibox-spring-boot-starter-protection" options="-parameters" />
+      <module name="aibox-spring-boot-starter-redis" options="-parameters" />
+      <module name="aibox-spring-boot-starter-security" options="-parameters" />
+      <module name="aibox-spring-boot-starter-web" options="-parameters" />
+      <module name="aibox-spring-boot-starter-websocket" options="-parameters" />
+    </option>
+  </component>
+</project>

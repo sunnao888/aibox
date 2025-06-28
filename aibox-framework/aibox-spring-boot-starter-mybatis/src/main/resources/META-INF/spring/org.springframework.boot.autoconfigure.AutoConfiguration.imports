@@ -1,0 +1,3 @@
+com.sunnao.aibox.framework.datasource.config.OpenOjDataSourceAutoConfiguration
+com.sunnao.aibox.framework.mybatis.config.OpenOjMybatisAutoConfiguration
+com.sunnao.aibox.framework.translate.config.OpenOjTranslateAutoConfiguration
