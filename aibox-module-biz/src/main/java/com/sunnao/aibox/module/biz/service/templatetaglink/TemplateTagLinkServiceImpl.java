@@ -1,24 +1,23 @@
 package com.sunnao.aibox.module.biz.service.templatetaglink;
 
 import cn.hutool.core.collection.CollUtil;
-import org.springframework.stereotype.Service;
-import jakarta.annotation.Resource;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
-import com.sunnao.aibox.module.biz.controller.admin.templatetaglink.vo.*;
-import com.sunnao.aibox.module.biz.dal.dataobject.templatetaglink.TemplateTagLinkDO;
 import com.sunnao.aibox.framework.common.pojo.PageResult;
-import com.sunnao.aibox.framework.common.pojo.PageParam;
 import com.sunnao.aibox.framework.common.util.object.BeanUtils;
-
+import com.sunnao.aibox.module.biz.controller.admin.templatetaglink.vo.TemplateTagLinkPageReqVO;
+import com.sunnao.aibox.module.biz.controller.admin.templatetaglink.vo.TemplateTagLinkSaveReqVO;
+import com.sunnao.aibox.module.biz.dal.dataobject.templatetaglink.TemplateTagLinkDO;
 import com.sunnao.aibox.module.biz.dal.mysql.templatetaglink.TemplateTagLinkMapper;
+import com.sunnao.aibox.module.biz.dal.redis.recommend.RecommendTemplateRedisDAO;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.sunnao.aibox.framework.common.exception.util.ServiceExceptionUtil.exception;
 import static com.sunnao.aibox.framework.common.util.collection.CollectionUtils.convertList;
-import static com.sunnao.aibox.framework.common.util.collection.CollectionUtils.diffList;
-import static com.sunnao.aibox.module.biz.enums.ErrorCodeConstants.*;
+import static com.sunnao.aibox.module.biz.enums.ErrorCodeConstants.TEMPLATE_TAG_LINK_NOT_EXISTS;
 
 /**
  * 模板标签关联 Service 实现类
@@ -32,11 +31,19 @@ public class TemplateTagLinkServiceImpl implements TemplateTagLinkService {
     @Resource
     private TemplateTagLinkMapper templateTagLinkMapper;
 
+    @Resource
+    private RecommendTemplateRedisDAO recommendTemplateRedisDAO;
+
+
     @Override
     public Long createTemplateTagLink(TemplateTagLinkSaveReqVO createReqVO) {
         // 插入
         TemplateTagLinkDO templateTagLink = BeanUtils.toBean(createReqVO, TemplateTagLinkDO.class);
         templateTagLinkMapper.insert(templateTagLink);
+
+        // 同步redis
+        recommendTemplateRedisDAO.addTagTemplateLink(templateTagLink.getTagId(), templateTagLink.getTemplateId());
+
         // 返回
         return templateTagLink.getId();
     }
@@ -47,6 +54,9 @@ public class TemplateTagLinkServiceImpl implements TemplateTagLinkService {
         validateTemplateTagLinkExists(updateReqVO.getId());
         // 更新
         TemplateTagLinkDO updateObj = BeanUtils.toBean(updateReqVO, TemplateTagLinkDO.class);
+
+        recommendTemplateRedisDAO.addTagTemplateLink(updateObj.getTagId(), updateObj.getTemplateId());
+
         templateTagLinkMapper.updateById(updateObj);
     }
 
@@ -59,12 +69,12 @@ public class TemplateTagLinkServiceImpl implements TemplateTagLinkService {
     }
 
     @Override
-        public void deleteTemplateTagLinkListByIds(List<Long> ids) {
+    public void deleteTemplateTagLinkListByIds(List<Long> ids) {
         // 校验存在
         validateTemplateTagLinkExists(ids);
         // 删除
         templateTagLinkMapper.deleteByIds(ids);
-        }
+    }
 
     private void validateTemplateTagLinkExists(List<Long> ids) {
         List<TemplateTagLinkDO> list = templateTagLinkMapper.selectByIds(ids);
@@ -94,7 +104,7 @@ public class TemplateTagLinkServiceImpl implements TemplateTagLinkService {
         if (CollUtil.isEmpty(tagIds)) {
             return;
         }
-        
+
         List<TemplateTagLinkDO> links = new ArrayList<>();
         for (Long tagId : tagIds) {
             TemplateTagLinkDO link = TemplateTagLinkDO.builder()
@@ -102,7 +112,9 @@ public class TemplateTagLinkServiceImpl implements TemplateTagLinkService {
                     .tagId(tagId)
                     .build();
             links.add(link);
+            recommendTemplateRedisDAO.addTagTemplateLink(tagId, templateId);
         }
+
         templateTagLinkMapper.insertBatch(links);
     }
 

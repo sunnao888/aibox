@@ -83,13 +83,13 @@
     {
       "name": "aibox.web.admin-api.controller",
       "type": "java.lang.String",
-      "description": "Controller 所在包的 Ant 路径规则 主要目的是，给该 Controller 设置指定的 {@link #prefix}",
+      "description": "Controller 所在包的 Ant 路径规则 <p> 主要目的是，给该 Controller 设置指定的 {@link #prefix}",
       "sourceType": "com.sunnao.aibox.framework.web.config.WebProperties$Api"
     },
     {
       "name": "aibox.web.admin-api.prefix",
       "type": "java.lang.String",
-      "description": "API 前缀，实现所有 Controller 提供的 RESTFul API 的统一前缀 意义：通过该前缀，避免 Swagger、Actuator 意外通过 Nginx 暴露出来给外部，带来安全性问题 这样，Nginx 只需要配置转发到 \/api\/* 的所有接口即可。 @see OpenOjWebAutoConfiguration#configurePathMatch(PathMatchConfigurer)",
+      "description": "API 前缀，实现所有 Controller 提供的 RESTFul API 的统一前缀 <p> <p> 意义：通过该前缀，避免 Swagger、Actuator 意外通过 Nginx 暴露出来给外部，带来安全性问题 这样，Nginx 只需要配置转发到 \/api\/* 的所有接口即可。 @see AiBoxWebAutoConfiguration#configurePathMatch(PathMatchConfigurer)",
       "sourceType": "com.sunnao.aibox.framework.web.config.WebProperties$Api"
     },
     {
@@ -101,13 +101,13 @@
     {
       "name": "aibox.web.app-api.controller",
       "type": "java.lang.String",
-      "description": "Controller 所在包的 Ant 路径规则 主要目的是，给该 Controller 设置指定的 {@link #prefix}",
+      "description": "Controller 所在包的 Ant 路径规则 <p> 主要目的是，给该 Controller 设置指定的 {@link #prefix}",
       "sourceType": "com.sunnao.aibox.framework.web.config.WebProperties$Api"
     },
     {
       "name": "aibox.web.app-api.prefix",
       "type": "java.lang.String",
-      "description": "API 前缀，实现所有 Controller 提供的 RESTFul API 的统一前缀 意义：通过该前缀，避免 Swagger、Actuator 意外通过 Nginx 暴露出来给外部，带来安全性问题 这样，Nginx 只需要配置转发到 \/api\/* 的所有接口即可。 @see OpenOjWebAutoConfiguration#configurePathMatch(PathMatchConfigurer)",
+      "description": "API 前缀，实现所有 Controller 提供的 RESTFul API 的统一前缀 <p> <p> 意义：通过该前缀，避免 Swagger、Actuator 意外通过 Nginx 暴露出来给外部，带来安全性问题 这样，Nginx 只需要配置转发到 \/api\/* 的所有接口即可。 @see AiBoxWebAutoConfiguration#configurePathMatch(PathMatchConfigurer)",
       "sourceType": "com.sunnao.aibox.framework.web.config.WebProperties$Api"
     },
     {

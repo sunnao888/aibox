@@ -2,6 +2,7 @@ package com.sunnao.aibox.framework.redis.core;
 
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
+import lombok.NonNull;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -12,7 +13,7 @@ import java.time.Duration;
 
 /**
  * 支持自定义过期时间的 {@link RedisCacheManager} 实现类
- *
+ * <p>
  * 在 {@link Cacheable#cacheNames()} 格式为 "key#ttl" 时，# 后面的 ttl 为过期时间。
  * 单位为最后一个字母（支持的单位有：d 天，h 小时，m 分钟，s 秒），默认单位为 s 秒
  *
@@ -27,7 +28,8 @@ public class TimeoutRedisCacheManager extends RedisCacheManager {
     }
 
     @Override
-    protected RedisCache createRedisCache(String name, RedisCacheConfiguration cacheConfig) {
+    @NonNull
+    protected RedisCache createRedisCache(@NonNull String name, RedisCacheConfiguration cacheConfig) {
         if (StrUtil.isEmpty(name)) {
             return super.createRedisCache(name, cacheConfig);
         }
@@ -59,18 +61,13 @@ public class TimeoutRedisCacheManager extends RedisCacheManager {
      */
     private Duration parseDuration(String ttlStr) {
         String timeUnit = StrUtil.subSuf(ttlStr, -1);
-        switch (timeUnit) {
-            case "d":
-                return Duration.ofDays(removeDurationSuffix(ttlStr));
-            case "h":
-                return Duration.ofHours(removeDurationSuffix(ttlStr));
-            case "m":
-                return Duration.ofMinutes(removeDurationSuffix(ttlStr));
-            case "s":
-                return Duration.ofSeconds(removeDurationSuffix(ttlStr));
-            default:
-                return Duration.ofSeconds(Long.parseLong(ttlStr));
-        }
+        return switch (timeUnit) {
+            case "d" -> Duration.ofDays(removeDurationSuffix(ttlStr));
+            case "h" -> Duration.ofHours(removeDurationSuffix(ttlStr));
+            case "m" -> Duration.ofMinutes(removeDurationSuffix(ttlStr));
+            case "s" -> Duration.ofSeconds(removeDurationSuffix(ttlStr));
+            default -> Duration.ofSeconds(Long.parseLong(ttlStr));
+        };
     }
 
     /**
