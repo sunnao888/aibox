@@ -118,7 +118,6 @@ public class TemplateController {
 
     @GetMapping("/recommend")
     @Operation(summary = "获得推荐的模板列表")
-    @PreAuthorize("@ss.hasPermission('biz:template:query')")
     public CommonResult<List<TemplateRespVO>> getRecommendTemplate(TemplateRecommendReqVO reqVO) {
         List<TemplateDO> list = templateService.getRecommendTemplate(reqVO);
         List<TemplateRespVO> respVOList = list.stream()

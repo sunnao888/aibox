@@ -9,7 +9,9 @@
       "Bash(git push:*)",
       "Bash(find:*)",
       "Bash(mvn clean:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(mkdir:*)",
+      "Bash(mvn compile:*)"
     ],
     "deny": []
   }
