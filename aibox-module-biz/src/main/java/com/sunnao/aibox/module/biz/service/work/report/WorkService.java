@@ -1,6 +1,7 @@
 package com.sunnao.aibox.module.biz.service.work.report;
 
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.BrainStormingReqVO;
+import com.sunnao.aibox.module.biz.controller.admin.work.vo.MockInterviewReqVO;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.PPTReqVO;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.ReportGenerateReqVO;
 import jakarta.validation.Valid;
@@ -35,4 +36,12 @@ public interface WorkService {
      * @return 生成的PPT大纲内容
      */
     String ppt(@Valid PPTReqVO reqVO);
+
+    /**
+     * 模拟面试
+     *
+     * @param reqVO 模拟面试请求参数
+     * @return 生成的模拟面试内容
+     */
+    String mockInterview(@Valid MockInterviewReqVO reqVO);
 }

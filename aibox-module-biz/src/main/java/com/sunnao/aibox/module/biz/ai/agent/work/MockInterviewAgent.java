@@ -1,6 +1,8 @@
 package com.sunnao.aibox.module.biz.ai.agent.work;
 
+import com.sunnao.aibox.module.biz.ai.options.work.MockInterviewOptions;
 import com.sunnao.aibox.module.biz.ai.options.work.PPTOptions;
+import com.sunnao.aibox.module.biz.ai.prompt.work.MockInterviewPrompt;
 import com.sunnao.aibox.module.biz.ai.prompt.work.PPTPrompt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +12,7 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.stereotype.Component;
 
 /**
- * PPT智能体
+ * 模拟面试智能体
  *
  * @author sunnao
  * @since 2025-06-29
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class PPTAgent {
+public class MockInterviewAgent {
 
     private final ChatModel chatModel;
 
@@ -32,17 +34,17 @@ public class PPTAgent {
         }
 
         String response = chatClient.prompt()
-                .system(PPTPrompt.PROMPT_TEMPLATE)
+                .system(MockInterviewPrompt.PROMPT_TEMPLATE)
                 .user(userMessage)
                 .options(ChatOptions.builder()
-                        .temperature(PPTOptions.TEMPERATURE)
-                        .model(PPTOptions.MODEL)
+                        .temperature(MockInterviewOptions.TEMPERATURE)
+                        .model(MockInterviewOptions.MODEL)
                         .build())
                 .call()
                 .content();
 
         log.info("""
-                PPT大纲测试
+                模拟面试测试
                 userMessage: {}
                 response: {}
                 """, userMessage, response);

@@ -2,6 +2,7 @@ package com.sunnao.aibox.module.biz.controller.admin.work;
 
 import com.sunnao.aibox.framework.common.pojo.CommonResult;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.BrainStormingReqVO;
+import com.sunnao.aibox.module.biz.controller.admin.work.vo.MockInterviewReqVO;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.PPTReqVO;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.ReportGenerateReqVO;
 import com.sunnao.aibox.module.biz.service.work.report.WorkService;
@@ -48,5 +49,15 @@ public class WorkController {
         String report = workService.ppt(reqVO);
         return CommonResult.success(report);
     }
+
+    @PostMapping("/mockInterview")
+    @Operation(summary = "模拟面试")
+    @PreAuthorize("@ss.hasPermission('biz:work:generate')")
+    public CommonResult<String> mockInterview(@Valid @RequestBody MockInterviewReqVO reqVO) {
+        String report = workService.mockInterview(reqVO);
+        return CommonResult.success(report);
+    }
+
+
 
 }

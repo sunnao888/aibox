@@ -2,10 +2,12 @@ package com.sunnao.aibox.module.biz.service.work.report;
 
 import com.sunnao.aibox.framework.security.core.util.SecurityFrameworkUtils;
 import com.sunnao.aibox.module.biz.ai.agent.work.BrainStormingAgent;
+import com.sunnao.aibox.module.biz.ai.agent.work.MockInterviewAgent;
 import com.sunnao.aibox.module.biz.ai.agent.work.PPTAgent;
 import com.sunnao.aibox.module.biz.ai.agent.work.ReportAgent;
 import com.sunnao.aibox.module.biz.ai.options.work.ReportOptions;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.BrainStormingReqVO;
+import com.sunnao.aibox.module.biz.controller.admin.work.vo.MockInterviewReqVO;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.PPTReqVO;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.ReportGenerateReqVO;
 import com.sunnao.aibox.module.biz.dal.dataobject.template.TemplateDO;
@@ -28,6 +30,8 @@ public class WorkServiceImpl implements WorkService {
     private final BrainStormingAgent brainStormingAgent;
 
     private final PPTAgent pptAgent;
+
+    private final MockInterviewAgent mockInterviewAgent;
 
     private final TemplateService templateService;
 
@@ -66,5 +70,10 @@ public class WorkServiceImpl implements WorkService {
     @Override
     public String ppt(PPTReqVO reqVO) {
         return pptAgent.chat(reqVO.getUserMessage());
+    }
+
+    @Override
+    public String mockInterview(MockInterviewReqVO reqVO) {
+        return mockInterviewAgent.chat(reqVO.getUserMessage());
     }
 }
