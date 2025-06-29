@@ -1,2 +1,2 @@
-com.sunnao.aibox.framework.datapermission.config.OpenOjDataPermissionAutoConfiguration
-com.sunnao.aibox.framework.datapermission.config.OpenOjDeptDataPermissionAutoConfiguration
+com.sunnao.aibox.framework.datapermission.config.AiBoxDataPermissionAutoConfiguration
+com.sunnao.aibox.framework.datapermission.config.AiBoxDeptDataPermissionAutoConfiguration

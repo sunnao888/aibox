@@ -32,6 +32,8 @@ public class ReportServiceImpl implements ReportService {
             if (template != null) {
                 inputCase = template.getInput();
                 outputCase = template.getOutput();
+
+
             }
         }
 

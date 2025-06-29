@@ -1,4 +1,4 @@
-com.sunnao.aibox.framework.idempotent.config.OpenOjIdempotentConfiguration
-com.sunnao.aibox.framework.lock4j.config.OpenOjLock4jConfiguration
-com.sunnao.aibox.framework.ratelimiter.config.OpenOjRateLimiterConfiguration
-com.sunnao.aibox.framework.signature.config.OpenOjApiSignatureAutoConfiguration
+com.sunnao.aibox.framework.idempotent.config.AiBoxIdempotentConfiguration
+com.sunnao.aibox.framework.lock4j.config.AiBoxLock4jConfiguration
+com.sunnao.aibox.framework.ratelimiter.config.AiBoxRateLimiterConfiguration
+com.sunnao.aibox.framework.signature.config.AiBoxApiSignatureAutoConfiguration

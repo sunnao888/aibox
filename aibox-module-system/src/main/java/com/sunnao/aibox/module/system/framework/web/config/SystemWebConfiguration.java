@@ -1,6 +1,6 @@
 package com.sunnao.aibox.module.system.framework.web.config;
 
-import com.sunnao.aibox.framework.swagger.config.OpenOjSwaggerAutoConfiguration;
+import com.sunnao.aibox.framework.swagger.config.AiBoxSwaggerAutoConfiguration;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,7 @@ public class SystemWebConfiguration {
      */
     @Bean
     public GroupedOpenApi systemGroupedOpenApi() {
-        return OpenOjSwaggerAutoConfiguration.buildGroupedOpenApi("system");
+        return AiBoxSwaggerAutoConfiguration.buildGroupedOpenApi("system");
     }
 
 }

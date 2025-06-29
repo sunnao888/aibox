@@ -1,6 +1,6 @@
-com.sunnao.aibox.framework.apilog.config.OpenOjApiLogAutoConfiguration
-com.sunnao.aibox.framework.jackson.config.OpenOjJacksonAutoConfiguration
-com.sunnao.aibox.framework.swagger.config.OpenOjSwaggerAutoConfiguration
-com.sunnao.aibox.framework.web.config.OpenOjWebAutoConfiguration
-com.sunnao.aibox.framework.xss.config.OpenOjXssAutoConfiguration
-com.sunnao.aibox.framework.banner.config.OpenOjBannerAutoConfiguration
+com.sunnao.aibox.framework.apilog.config.AiBoxApiLogAutoConfiguration
+com.sunnao.aibox.framework.jackson.config.AiBoxJacksonAutoConfiguration
+com.sunnao.aibox.framework.swagger.config.AiBoxSwaggerAutoConfiguration
+com.sunnao.aibox.framework.web.config.AiBoxWebAutoConfiguration
+com.sunnao.aibox.framework.xss.config.AiBoxXssAutoConfiguration
+com.sunnao.aibox.framework.banner.config.AiBoxBannerAutoConfiguration

@@ -1,2 +1,2 @@
-com.sunnao.aibox.framework.redis.config.OpenOjRedisAutoConfiguration
-com.sunnao.aibox.framework.redis.config.OpenOjCacheAutoConfiguration
+com.sunnao.aibox.framework.redis.config.AiBoxRedisAutoConfiguration
+com.sunnao.aibox.framework.redis.config.AiBoxCacheAutoConfiguration

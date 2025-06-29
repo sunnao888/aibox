@@ -1,1 +1,1 @@
-com.sunnao.aibox.framework.websocket.config.OpenOjWebSocketAutoConfiguration
+com.sunnao.aibox.framework.websocket.config.AiBoxWebSocketAutoConfiguration
