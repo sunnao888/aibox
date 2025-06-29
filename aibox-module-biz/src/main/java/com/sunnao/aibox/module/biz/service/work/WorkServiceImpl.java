@@ -1,4 +1,4 @@
-package com.sunnao.aibox.module.biz.service.work.report;
+package com.sunnao.aibox.module.biz.service.work;
 
 import com.sunnao.aibox.framework.security.core.util.SecurityFrameworkUtils;
 import com.sunnao.aibox.module.biz.ai.agent.work.BrainStormingAgent;

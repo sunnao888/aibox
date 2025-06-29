@@ -5,7 +5,7 @@ import com.sunnao.aibox.module.biz.controller.admin.work.vo.BrainStormingReqVO;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.MockInterviewReqVO;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.PPTReqVO;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.ReportGenerateReqVO;
-import com.sunnao.aibox.module.biz.service.work.report.WorkService;
+import com.sunnao.aibox.module.biz.service.work.WorkService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -57,7 +57,4 @@ public class WorkController {
         String report = workService.mockInterview(reqVO);
         return CommonResult.success(report);
     }
-
-
-
 }

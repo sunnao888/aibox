@@ -1,4 +1,4 @@
-package com.sunnao.aibox.module.biz.service.work.report;
+package com.sunnao.aibox.module.biz.service.work;
 
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.BrainStormingReqVO;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.MockInterviewReqVO;
