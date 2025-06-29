@@ -31,6 +31,7 @@ import com.sunnao.aibox.module.system.dal.mysql.user.AdminUserMapper;
 import com.sunnao.aibox.module.system.service.dept.DeptService;
 import com.sunnao.aibox.module.system.service.dept.PostService;
 import com.sunnao.aibox.module.system.service.permission.PermissionService;
+import com.sunnao.aibox.module.system.service.permission.RoleService;
 import jakarta.annotation.Resource;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -75,6 +76,9 @@ public class AdminUserServiceImpl implements AdminUserService {
     private UserPostMapper userPostMapper;
 
     @Resource
+    private RoleService roleService;
+
+    @Resource
     private ConfigApi configApi;
 
     @Override
@@ -115,6 +119,9 @@ public class AdminUserServiceImpl implements AdminUserService {
         user.setStatus(CommonStatusEnum.ENABLE.getStatus()); // 默认开启
         user.setPassword(encodePassword(registerReqVO.getPassword())); // 加密密码
         userMapper.insert(user);
+
+        // 3. 为用户分配默认角色
+        permissionService.assignUserRole(user.getId(), CollUtil.newHashSet(158L));
         return user.getId();
     }
 
@@ -323,7 +330,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     private AdminUserDO validateUserForCreateOrUpdate(Long id, String username, String mobile, String email,
-                                               Long deptId, Set<Long> postIds) {
+                                                      Long deptId, Set<Long> postIds) {
         // 关闭数据权限，避免因为没有数据权限，查询不到数据，进而导致唯一校验不正确
         return DataPermissionUtils.executeIgnore(() -> {
             // 校验用户存在
@@ -410,6 +417,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     /**
      * 校验旧密码
+     *
      * @param id          用户 id
      * @param oldPassword 旧密码
      */
@@ -444,7 +452,7 @@ public class AdminUserServiceImpl implements AdminUserService {
             // 2.1.1 校验字段是否符合要求
             try {
                 ValidationUtils.validate(BeanUtils.toBean(importUser, UserSaveReqVO.class).setPassword(initPassword));
-            } catch (ConstraintViolationException ex){
+            } catch (ConstraintViolationException ex) {
                 respVO.getFailureUsernames().put(importUser.getUsername(), ex.getMessage());
                 return;
             }
