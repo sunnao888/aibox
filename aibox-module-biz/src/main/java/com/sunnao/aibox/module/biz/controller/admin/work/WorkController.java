@@ -2,6 +2,7 @@ package com.sunnao.aibox.module.biz.controller.admin.work;
 
 import com.sunnao.aibox.framework.common.pojo.CommonResult;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.BrainStormingReqVO;
+import com.sunnao.aibox.module.biz.controller.admin.work.vo.PPTReqVO;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.ReportGenerateReqVO;
 import com.sunnao.aibox.module.biz.service.work.report.WorkService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,6 +38,14 @@ public class WorkController {
     @PreAuthorize("@ss.hasPermission('biz:work:generate')")
     public CommonResult<String> brainStorming(@Valid @RequestBody BrainStormingReqVO reqVO) {
         String report = workService.brainStorming(reqVO);
+        return CommonResult.success(report);
+    }
+
+    @PostMapping("/ppt")
+    @Operation(summary = "PPT大纲生成")
+    @PreAuthorize("@ss.hasPermission('biz:work:generate')")
+    public CommonResult<String> ppt(@Valid @RequestBody PPTReqVO reqVO) {
+        String report = workService.ppt(reqVO);
         return CommonResult.success(report);
     }
 

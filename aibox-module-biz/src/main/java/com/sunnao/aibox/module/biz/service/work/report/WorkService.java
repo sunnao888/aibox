@@ -1,6 +1,7 @@
 package com.sunnao.aibox.module.biz.service.work.report;
 
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.BrainStormingReqVO;
+import com.sunnao.aibox.module.biz.controller.admin.work.vo.PPTReqVO;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.ReportGenerateReqVO;
 import jakarta.validation.Valid;
 
@@ -26,4 +27,12 @@ public interface WorkService {
      * @return 生成的头脑风暴内容
      */
     String brainStorming(@Valid BrainStormingReqVO reqVO);
+
+    /**
+     * 生成PPT大纲
+     *
+     * @param reqVO PPT大纲生成请求参数
+     * @return 生成的PPT大纲内容
+     */
+    String ppt(@Valid PPTReqVO reqVO);
 }
