@@ -1,8 +1,10 @@
 package com.sunnao.aibox.module.biz.service.work.report;
 
 import com.sunnao.aibox.framework.security.core.util.SecurityFrameworkUtils;
+import com.sunnao.aibox.module.biz.ai.agent.work.BrainStormingAgent;
 import com.sunnao.aibox.module.biz.ai.agent.work.ReportAgent;
 import com.sunnao.aibox.module.biz.ai.options.work.ReportOptions;
+import com.sunnao.aibox.module.biz.controller.admin.work.vo.BrainStormingReqVO;
 import com.sunnao.aibox.module.biz.controller.admin.work.vo.ReportGenerateReqVO;
 import com.sunnao.aibox.module.biz.dal.dataobject.template.TemplateDO;
 import com.sunnao.aibox.module.biz.dal.redis.recommend.RecommendTemplateRedisDAO;
@@ -17,9 +19,11 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ReportServiceImpl implements ReportService {
+public class WorkServiceImpl implements WorkService {
 
     private final ReportAgent reportAgent;
+
+    private final BrainStormingAgent brainStormingAgent;
 
     private final TemplateService templateService;
 
@@ -50,5 +54,8 @@ public class ReportServiceImpl implements ReportService {
         return reportAgent.chat(reqVO.getType(), inputCase, outputCase, reqVO.getUserMessage());
     }
 
-
+    @Override
+    public String brainStorming(BrainStormingReqVO reqVO) {
+        return brainStormingAgent.chat(reqVO.getUserMessage());
+    }
 }

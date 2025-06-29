@@ -2,7 +2,7 @@ package com.sunnao.aibox.module.biz.ai.options.work;
 
 public interface ReportOptions {
 
-    Double TEMPERATURE = 1.3;
+    Double TEMPERATURE = 0.7;
 
     String MODEL = "qwen-plus";
 
