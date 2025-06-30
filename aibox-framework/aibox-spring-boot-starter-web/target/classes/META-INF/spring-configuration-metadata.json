@@ -114,7 +114,8 @@
       "name": "aibox.xss.enable",
       "type": "java.lang.Boolean",
       "description": "是否开启，默认为 true",
-      "sourceType": "com.sunnao.aibox.framework.xss.config.XssProperties"
+      "sourceType": "com.sunnao.aibox.framework.xss.config.XssProperties",
+      "defaultValue": true
     },
     {
       "name": "aibox.xss.exclude-urls",

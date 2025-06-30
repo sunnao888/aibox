@@ -11,7 +11,8 @@
       "name": "aibox.cache.redis-scan-batch-size",
       "type": "java.lang.Integer",
       "description": "redis scan 一次返回数量",
-      "sourceType": "com.sunnao.aibox.framework.redis.config.AiBoxCacheProperties"
+      "sourceType": "com.sunnao.aibox.framework.redis.config.AiBoxCacheProperties",
+      "defaultValue": 30
     }
   ],
   "hints": []

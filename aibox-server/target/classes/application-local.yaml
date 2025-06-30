@@ -46,22 +46,22 @@ spring:
       primary: master
       datasource:
         master:
-          url: jdbc:mysql://127.0.0.1:3306/aibox?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true
+          url: jdbc:mysql://150.158.178.192:3306/aibox?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true
           username: root
-          password: 123456
+          password: SjSj233..
         slave:
           lazy: true
-          url: jdbc:mysql://127.0.0.1:3306/aibox?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&nullCatalogMeansCurrent=true
+          url: jdbc:mysql://150.158.178.192:3306/aibox?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&nullCatalogMeansCurrent=true
           username: root
-          password: 123456
+          password: SjSj233..
 
   # Redis 配置。Redisson 默认的配置足够使用，一般不需要进行调优
   data:
     redis:
-      host: 127.0.0.1 # 地址
+      host: 150.158.178.192 # 地址
       port: 6379 # 端口
       database: 0 # 数据库索引
-      password: 123456 # 密码，建议生产环境开启
+      password: SjSj233.. # 密码，建议生产环境开启
 
   ai:
     dashscope:
