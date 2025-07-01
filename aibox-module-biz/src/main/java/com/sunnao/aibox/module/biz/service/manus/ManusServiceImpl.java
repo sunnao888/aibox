@@ -1,6 +1,8 @@
 package com.sunnao.aibox.module.biz.service.manus;
 
 import com.sunnao.aibox.module.biz.ai.agent.manus.JManus;
+import com.sunnao.aibox.module.biz.ai.agent.manus.manager.UserAgentNameManager;
+import com.sunnao.aibox.module.biz.ai.agent.manus.model.AgentName;
 import com.sunnao.aibox.module.biz.ai.agent.manus.model.ResultMessage;
 import com.sunnao.aibox.module.biz.controller.admin.manus.vo.ManusReqVO;
 import jakarta.annotation.Resource;
@@ -19,6 +21,9 @@ public class ManusServiceImpl implements ManusService {
     @Resource
     private JManus jManus;
 
+    @Resource
+    private UserAgentNameManager userAgentNameManager;
+
     @Override
     public List<ResultMessage> jManus(ManusReqVO reqVO) {
         return jManus.run(reqVO.getUserMessage());
@@ -26,6 +31,10 @@ public class ManusServiceImpl implements ManusService {
 
     @Override
     public SseEmitter jManusStream(ManusReqVO reqVO) {
+
+        // 绑定用户和智能体名称
+        userAgentNameManager.bind(AgentName.JMANUS);
+
         // 创建 SSE 发射器，设置超时时间为 10 分钟
         SseEmitter emitter = new SseEmitter(10 * 60 * 1000L);
 
