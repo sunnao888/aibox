@@ -1,3 +1,0 @@
-com.sunnao.aibox.framework.datasource.config.AiBoxDataSourceAutoConfiguration
-com.sunnao.aibox.framework.mybatis.config.AiBoxMybatisAutoConfiguration
-com.sunnao.aibox.framework.translate.config.AiBoxTranslateAutoConfiguration

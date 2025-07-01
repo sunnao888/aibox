@@ -1,6 +1,0 @@
-com.sunnao.aibox.framework.apilog.config.AiBoxApiLogAutoConfiguration
-com.sunnao.aibox.framework.jackson.config.AiBoxJacksonAutoConfiguration
-com.sunnao.aibox.framework.swagger.config.AiBoxSwaggerAutoConfiguration
-com.sunnao.aibox.framework.web.config.AiBoxWebAutoConfiguration
-com.sunnao.aibox.framework.xss.config.AiBoxXssAutoConfiguration
-com.sunnao.aibox.framework.banner.config.AiBoxBannerAutoConfiguration

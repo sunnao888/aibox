@@ -1,4 +1,0 @@
-com.sunnao.aibox.framework.idempotent.config.AiBoxIdempotentConfiguration
-com.sunnao.aibox.framework.lock4j.config.AiBoxLock4jConfiguration
-com.sunnao.aibox.framework.ratelimiter.config.AiBoxRateLimiterConfiguration
-com.sunnao.aibox.framework.signature.config.AiBoxApiSignatureAutoConfiguration

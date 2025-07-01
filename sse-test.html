@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JManus SSE 测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .status.connected {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.connecting {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .messages {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            height: 400px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .message.start {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+        }
+        .message.result {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        .message.complete {
+            background-color: #e2e3e5;
+            border-left: 4px solid #6c757d;
+        }
+        .message.error {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        .timestamp {
+            font-size: 0.8em;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>JManus SSE 流式响应测试</h1>
+    
+    <div class="container">
+        <div class="input-group">
+            <label for="serverUrl">服务器地址:</label>
+            <input type="text" id="serverUrl" value="http://localhost:48080/admin-api/biz/manus/jManus" placeholder="输入 SSE 接口地址">
+        </div>
+        
+        <div class="input-group">
+            <label for="userMessage">用户消息:</label>
+            <textarea id="userMessage" placeholder="输入您想要发送给 JManus 的消息...">帮我查询今天的天气</textarea>
+        </div>
+        
+        <button id="connectBtn" onclick="startSSE()">开始连接</button>
+        <button id="disconnectBtn" onclick="stopSSE()" disabled>断开连接</button>
+        <button onclick="clearMessages()">清空消息</button>
+    </div>
+    
+    <div class="container">
+        <div id="status" class="status disconnected">状态: 未连接</div>
+        <h3>实时消息:</h3>
+        <div id="messages" class="messages"></div>
+    </div>
+
+    <script>
+        let eventSource = null;
+        let isConnected = false;
+
+        function updateStatus(status, className) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = `状态: ${status}`;
+            statusDiv.className = `status ${className}`;
+        }
+
+        function addMessage(type, data, eventName = '') {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const timestampDiv = document.createElement('div');
+            timestampDiv.className = 'timestamp';
+            timestampDiv.textContent = `${timestamp} [${eventName || type}]`;
+            
+            const contentDiv = document.createElement('div');
+            
+            // 尝试解析 JSON 数据
+            let content = data;
+            try {
+                const jsonData = JSON.parse(data);
+                content = JSON.stringify(jsonData, null, 2);
+            } catch (e) {
+                // 如果不是 JSON，直接显示原始数据
+                content = data;
+            }
+            
+            contentDiv.textContent = content;
+            
+            messageDiv.appendChild(timestampDiv);
+            messageDiv.appendChild(contentDiv);
+            messagesDiv.appendChild(messageDiv);
+            
+            // 自动滚动到底部
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function startSSE() {
+            if (isConnected) {
+                alert('已经连接中，请先断开连接');
+                return;
+            }
+
+            const serverUrl = document.getElementById('serverUrl').value.trim();
+            const userMessage = document.getElementById('userMessage').value.trim();
+            
+            if (!serverUrl) {
+                alert('请输入服务器地址');
+                return;
+            }
+            
+            if (!userMessage) {
+                alert('请输入用户消息');
+                return;
+            }
+
+            updateStatus('连接中...', 'connecting');
+            document.getElementById('connectBtn').disabled = true;
+            document.getElementById('disconnectBtn').disabled = false;
+
+            // 创建 POST 请求发送数据并建立 SSE 连接
+            fetch(serverUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'text/event-stream',
+                    'Cache-Control': 'no-cache'
+                },
+                body: JSON.stringify({
+                    userMessage: userMessage
+                })
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                updateStatus('已连接', 'connected');
+                isConnected = true;
+                
+                // 读取流式响应
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                
+                function readStream() {
+                    reader.read().then(({ done, value }) => {
+                        if (done) {
+                            updateStatus('连接已关闭', 'disconnected');
+                            isConnected = false;
+                            document.getElementById('connectBtn').disabled = false;
+                            document.getElementById('disconnectBtn').disabled = true;
+                            return;
+                        }
+                        
+                        // 解析 SSE 数据
+                        const chunk = decoder.decode(value);
+                        const lines = chunk.split('\n');
+                        
+                        let eventName = '';
+                        let eventData = '';
+                        
+                        for (const line of lines) {
+                            if (line.startsWith('event:')) {
+                                eventName = line.substring(6).trim();
+                            } else if (line.startsWith('data:')) {
+                                eventData = line.substring(5).trim();
+                                
+                                if (eventData && eventName) {
+                                    addMessage(eventName, eventData, eventName);
+                                    eventName = '';
+                                    eventData = '';
+                                }
+                            }
+                        }
+                        
+                        readStream();
+                    }).catch(error => {
+                        console.error('读取流时出错:', error);
+                        addMessage('error', `读取流时出错: ${error.message}`, 'error');
+                        updateStatus('连接错误', 'disconnected');
+                        isConnected = false;
+                        document.getElementById('connectBtn').disabled = false;
+                        document.getElementById('disconnectBtn').disabled = true;
+                    });
+                }
+                
+                readStream();
+                
+            }).catch(error => {
+                console.error('连接失败:', error);
+                addMessage('error', `连接失败: ${error.message}`, 'error');
+                updateStatus('连接失败', 'disconnected');
+                isConnected = false;
+                document.getElementById('connectBtn').disabled = false;
+                document.getElementById('disconnectBtn').disabled = true;
+            });
+        }
+
+        function stopSSE() {
+            if (eventSource) {
+                eventSource.close();
+                eventSource = null;
+            }
+            
+            updateStatus('已断开连接', 'disconnected');
+            isConnected = false;
+            document.getElementById('connectBtn').disabled = false;
+            document.getElementById('disconnectBtn').disabled = true;
+            
+            addMessage('info', '用户主动断开连接', 'disconnect');
+        }
+
+        function clearMessages() {
+            document.getElementById('messages').innerHTML = '';
+        }
+
+        // 页面卸载时关闭连接
+        window.addEventListener('beforeunload', function() {
+            if (eventSource) {
+                eventSource.close();
+            }
+        });
+    </script>
+</body>
+</html>

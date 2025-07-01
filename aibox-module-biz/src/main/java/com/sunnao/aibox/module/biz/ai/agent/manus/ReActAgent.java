@@ -1,6 +1,7 @@
 package com.sunnao.aibox.module.biz.ai.agent.manus;
 
-import lombok.Data;
+import com.sunnao.aibox.module.biz.ai.agent.manus.handler.StreamingResultHandler;
+import com.sunnao.aibox.module.biz.ai.agent.manus.manager.AgentStateManager;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -9,9 +10,18 @@ import lombok.extern.slf4j.Slf4j;
  * @author sunnao
  * @since 2025-06-30
  */
-@Data
 @Slf4j
 public abstract class ReActAgent extends BaseAgent {
+
+    /**
+     * 构造函数
+     *
+     * @param stateManager 状态管理器
+     * @param streamingHandler 流式处理器
+     */
+    protected ReActAgent(AgentStateManager stateManager, StreamingResultHandler streamingHandler) {
+        super(stateManager, streamingHandler);
+    }
 
     /**
      * 思考

@@ -1,3 +1,0 @@
-com.sunnao.aibox.framework.security.config.AiBoxSecurityAutoConfiguration
-com.sunnao.aibox.framework.security.config.AiBoxWebSecurityConfigurerAdapter
-com.sunnao.aibox.framework.operatelog.config.AiBoxOperateLogConfiguration

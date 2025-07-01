@@ -11,4 +11,8 @@ public interface ErrorCodeConstants {
     // manus相关错误码
     ErrorCode USER_PROMPT_NOT_EXISTS = new ErrorCode(1_000_101, "用户提示词为空");
     ErrorCode AGENT_IS_RUNNING = new ErrorCode(1_000_102, "智能体正在运行中，请等待任务执行完成");
+    ErrorCode AGENT_IO_ERROR = new ErrorCode(1_000_103, "智能体执行IO异常: {}");
+    ErrorCode AGENT_INTERRUPTED = new ErrorCode(1_000_104, "智能体执行被中断");
+    ErrorCode AGENT_UNKNOWN_ERROR = new ErrorCode(1_000_105, "智能体执行未知异常: {}");
+    ErrorCode AGENT_CONFIG_INVALID = new ErrorCode(1_000_106, "智能体配置无效: {}");
 }

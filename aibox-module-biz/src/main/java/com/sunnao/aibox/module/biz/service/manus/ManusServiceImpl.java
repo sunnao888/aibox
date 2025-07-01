@@ -1,13 +1,17 @@
 package com.sunnao.aibox.module.biz.service.manus;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunnao.aibox.module.biz.ai.agent.manus.JManus;
 import com.sunnao.aibox.module.biz.ai.agent.manus.model.ResultMessage;
 import com.sunnao.aibox.module.biz.controller.admin.manus.vo.ManusReqVO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @Slf4j
@@ -16,10 +20,61 @@ public class ManusServiceImpl implements ManusService {
     @Resource
     private JManus jManus;
 
+    @Resource
+    private ObjectMapper objectMapper;
+
     @Override
     public List<ResultMessage> jManus(ManusReqVO reqVO) {
         List<ResultMessage> result = jManus.run(reqVO.getUserMessage());
         log.info("JManus 执行结果 {}", result);
         return result;
+    }
+
+    @Override
+    public SseEmitter jManusStream(ManusReqVO reqVO) {
+        // 创建 SSE 发射器，设置超时时间为 10 分钟
+        SseEmitter emitter = new SseEmitter(10 * 60 * 1000L);
+
+        // 异步执行智能体任务
+        CompletableFuture.runAsync(() -> {
+            try {
+                log.info("开始执行 JManus 流式任务，用户消息: {}", reqVO.getUserMessage());
+
+                // 发送开始事件
+                emitter.send(SseEmitter.event()
+                    .name("start")
+                    .data("{\"message\":\"开始处理您的请求...\"}"));
+
+                // 使用 BaseAgent 的新 SSE 方法执行任务
+                jManus.runWithSseEmitter(reqVO.getUserMessage(), emitter);
+
+                // 发送完成事件
+                emitter.send(SseEmitter.event()
+                    .name("complete")
+                    .data("{\"message\":\"任务执行完成\"}"));
+
+                // 完成 SSE 连接
+                emitter.complete();
+                log.info("JManus 流式任务执行完成");
+
+            } catch (Exception e) {
+                log.error("JManus 流式任务执行失败", e);
+                try {
+                    emitter.send(SseEmitter.event()
+                        .name("error")
+                        .data("{\"message\":\"任务执行失败: " + e.getMessage() + "\"}"));
+                } catch (IOException ioException) {
+                    log.error("发送错误事件失败", ioException);
+                }
+                emitter.completeWithError(e);
+            }
+        });
+
+        // 设置连接关闭和超时的回调
+        emitter.onCompletion(() -> log.info("SSE 连接正常关闭"));
+        emitter.onTimeout(() -> log.warn("SSE 连接超时"));
+        emitter.onError(throwable -> log.error("SSE 连接发生错误", throwable));
+
+        return emitter;
     }
 }

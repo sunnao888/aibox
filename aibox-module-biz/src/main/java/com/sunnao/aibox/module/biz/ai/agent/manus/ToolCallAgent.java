@@ -2,10 +2,11 @@ package com.sunnao.aibox.module.biz.ai.agent.manus;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
+import com.sunnao.aibox.module.biz.ai.agent.manus.handler.StreamingResultHandler;
 import com.sunnao.aibox.module.biz.ai.agent.manus.manager.AgentStateManager;
 import com.sunnao.aibox.module.biz.ai.agent.manus.model.MessageType;
 import com.sunnao.aibox.module.biz.ai.agent.manus.model.ResultMessage;
-import lombok.Data;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.SystemMessage;
@@ -13,7 +14,7 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.tool.ToolCallback;
 
-@Data
+@Getter
 @Slf4j
 public class ToolCallAgent extends ReActAgent {
 
@@ -23,25 +24,27 @@ public class ToolCallAgent extends ReActAgent {
     // 调用llm传递的一些参数配置
     private final ChatOptions chatOptions = DashScopeChatOptions.builder().build();
 
-    public ToolCallAgent(ToolCallback[] availableTools) {
-        super();
+    public ToolCallAgent(ToolCallback[] availableTools, AgentStateManager stateManager, StreamingResultHandler streamingHandler) {
+        super(stateManager, streamingHandler);
         this.availableTools = availableTools;
     }
 
     @Override
     public Boolean think() {
-        AgentStateManager state = getState();
+        String agentName = config.getName();
+
         // 校验提示词，有的话添加到记忆和系统提示词
-        if (StrUtil.isNotBlank(getNextStepPrompt())) {
-            setSystemPrompt(String.join(getSystemPrompt(), "\n", getNextStepPrompt()));
-            state.addMemory(getName(), new SystemMessage(getNextStepPrompt()));
+        if (StrUtil.isNotBlank(config.getNextStepPrompt())) {
+            String combinedPrompt = String.join(config.getSystemPrompt(), "\n", config.getNextStepPrompt());
+            config.setSystemPrompt(combinedPrompt);
+            stateManager.addMemory(agentName, new SystemMessage(config.getNextStepPrompt()));
         }
 
         // 调用llm并获取响应
-        ChatResponse response = getChatClient()
+        ChatResponse response = chatClient
                 .prompt()
-                .system(getSystemPrompt())
-                .messages(state.getMemory(getName()))
+                .system(config.getSystemPrompt())
+                .messages(stateManager.getMemory(agentName))
                 .options(chatOptions)
                 .toolCallbacks(availableTools)
                 .call()
@@ -52,8 +55,8 @@ public class ToolCallAgent extends ReActAgent {
 
         // 把响应添加到结果和记忆中
         if (StrUtil.isNotBlank(responseText) && !responseText.contains("end")) {
-            state.getResult(getName()).add(new ResultMessage(MessageType.AGENT, state.getCurrentStep(getName()), responseText));
-            state.getMemory(getName()).add(new AssistantMessage(responseText));
+            stateManager.getResult(agentName).add(new ResultMessage(MessageType.AGENT, stateManager.getCurrentStep(agentName), responseText));
+            stateManager.getMemory(agentName).add(new AssistantMessage(responseText));
         }
         // 因为思考-行动-观察步骤中思考-行动这一步Spring Ai帮助我们实现了，所以默认不需要我们手动控制是否行动。
         return false;
