@@ -1,6 +1,5 @@
 package com.sunnao.aibox.module.biz.ai.agent.work;
 
-import com.sunnao.aibox.module.biz.ai.agent.BaseAgent;
 import com.sunnao.aibox.module.biz.ai.options.work.ReportOptions;
 import com.sunnao.aibox.module.biz.ai.prompt.work.ReportPrompt;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class ReportAgent extends BaseAgent {
+public class ReportAgent {
 
     private final ChatModel chatModel;
 

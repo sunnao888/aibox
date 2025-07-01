@@ -1,24 +1,21 @@
 package com.sunnao.aibox.module.biz.service.tag;
 
 import cn.hutool.core.collection.CollUtil;
-import org.springframework.stereotype.Service;
-import jakarta.annotation.Resource;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
-import com.sunnao.aibox.module.biz.controller.admin.tag.vo.*;
-import com.sunnao.aibox.module.biz.dal.dataobject.tag.TagDO;
 import com.sunnao.aibox.framework.common.pojo.PageResult;
-import com.sunnao.aibox.framework.common.pojo.PageParam;
 import com.sunnao.aibox.framework.common.util.object.BeanUtils;
-
+import com.sunnao.aibox.module.biz.controller.admin.tag.vo.TagPageReqVO;
+import com.sunnao.aibox.module.biz.controller.admin.tag.vo.TagSaveReqVO;
+import com.sunnao.aibox.module.biz.dal.dataobject.tag.TagDO;
 import com.sunnao.aibox.module.biz.dal.mysql.tag.TagMapper;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.sunnao.aibox.framework.common.exception.util.ServiceExceptionUtil.exception;
-import static com.sunnao.aibox.framework.common.util.collection.CollectionUtils.convertList;
-import static com.sunnao.aibox.framework.common.util.collection.CollectionUtils.diffList;
-import static com.sunnao.aibox.module.biz.enums.ErrorCodeConstants.*;
+import static com.sunnao.aibox.module.biz.enums.ErrorCodeConstants.TAG_NOT_EXISTS;
 
 /**
  * 标签 Service 实现类
@@ -59,12 +56,12 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-        public void deleteTagListByIds(List<Long> ids) {
+    public void deleteTagListByIds(List<Long> ids) {
         // 校验存在
         validateTagExists(ids);
         // 删除
         tagMapper.deleteByIds(ids);
-        }
+    }
 
     private void validateTagExists(List<Long> ids) {
         List<TagDO> list = tagMapper.selectByIds(ids);
