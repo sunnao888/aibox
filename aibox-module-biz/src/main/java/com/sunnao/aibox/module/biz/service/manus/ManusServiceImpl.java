@@ -1,6 +1,5 @@
 package com.sunnao.aibox.module.biz.service.manus;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunnao.aibox.module.biz.ai.agent.manus.JManus;
 import com.sunnao.aibox.module.biz.ai.agent.manus.model.ResultMessage;
 import com.sunnao.aibox.module.biz.controller.admin.manus.vo.ManusReqVO;
@@ -20,14 +19,9 @@ public class ManusServiceImpl implements ManusService {
     @Resource
     private JManus jManus;
 
-    @Resource
-    private ObjectMapper objectMapper;
-
     @Override
     public List<ResultMessage> jManus(ManusReqVO reqVO) {
-        List<ResultMessage> result = jManus.run(reqVO.getUserMessage());
-        log.info("JManus 执行结果 {}", result);
-        return result;
+        return jManus.run(reqVO.getUserMessage());
     }
 
     @Override
@@ -38,31 +32,16 @@ public class ManusServiceImpl implements ManusService {
         // 异步执行智能体任务
         CompletableFuture.runAsync(() -> {
             try {
-                log.info("开始执行 JManus 流式任务，用户消息: {}", reqVO.getUserMessage());
-
-                // 发送开始事件
-                emitter.send(SseEmitter.event()
-                    .name("start")
-                    .data("{\"message\":\"开始处理您的请求...\"}"));
-
                 // 使用 BaseAgent 的新 SSE 方法执行任务
                 jManus.runWithSseEmitter(reqVO.getUserMessage(), emitter);
-
-                // 发送完成事件
-                emitter.send(SseEmitter.event()
-                    .name("complete")
-                    .data("{\"message\":\"任务执行完成\"}"));
-
                 // 完成 SSE 连接
                 emitter.complete();
-                log.info("JManus 流式任务执行完成");
-
             } catch (Exception e) {
                 log.error("JManus 流式任务执行失败", e);
                 try {
                     emitter.send(SseEmitter.event()
-                        .name("error")
-                        .data("{\"message\":\"任务执行失败: " + e.getMessage() + "\"}"));
+                            .name("error")
+                            .data("{\"message\":\"任务执行失败: " + e.getMessage() + "\"}"));
                 } catch (IOException ioException) {
                     log.error("发送错误事件失败", ioException);
                 }

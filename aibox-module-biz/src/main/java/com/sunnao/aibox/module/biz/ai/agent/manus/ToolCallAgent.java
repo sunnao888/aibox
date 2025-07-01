@@ -35,8 +35,6 @@ public class ToolCallAgent extends ReActAgent {
 
         // 校验提示词，有的话添加到记忆和系统提示词
         if (StrUtil.isNotBlank(config.getNextStepPrompt())) {
-            String combinedPrompt = String.join(config.getSystemPrompt(), "\n", config.getNextStepPrompt());
-            config.setSystemPrompt(combinedPrompt);
             stateManager.addMemory(agentName, new SystemMessage(config.getNextStepPrompt()));
         }
 

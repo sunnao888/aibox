@@ -23,9 +23,9 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class StreamingResultHandler {
-    
+
     private final ObjectMapper objectMapper;
-    
+
     /**
      * 推送新增的结果到SSE客户端
      *
@@ -37,10 +37,10 @@ public class StreamingResultHandler {
         if (!context.isStreaming() || context.getSseEmitter() == null) {
             return;
         }
-        
+
         SseEmitter emitter = context.getSseEmitter();
         int lastCount = context.getLastResultCount();
-        
+
         if (results.size() > lastCount) {
             // 推送新增的结果
             for (int i = lastCount; i < results.size(); i++) {
@@ -50,12 +50,12 @@ public class StreamingResultHandler {
             context.updateLastResultCount(results.size());
         }
     }
-    
+
     /**
      * 推送单个结果
      *
-     * @param emitter SSE发射器
-     * @param result 结果消息
+     * @param emitter     SSE发射器
+     * @param result      结果消息
      * @param executionId 执行ID
      * @throws IOException 当推送失败时
      */
@@ -66,28 +66,28 @@ public class StreamingResultHandler {
                     .name("result")
                     .id(executionId + "-" + result.getStep())
                     .data(jsonData));
-            
-            log.debug("推送结果成功 - 执行ID: {}, 步骤: {}, 类型: {}", 
+
+            log.debug("推送结果成功 - 执行ID: {}, 步骤: {}, 类型: {}",
                     executionId, result.getStep(), result.getType());
-                    
+
         } catch (IOException e) {
             log.error("推送SSE结果失败 - 执行ID: {}, 步骤: {}", executionId, result.getStep(), e);
             throw e;
         }
     }
-    
+
     /**
      * 推送错误结果
      *
-     * @param context 执行上下文
+     * @param context      执行上下文
      * @param errorMessage 错误消息
-     * @param currentStep 当前步骤
+     * @param currentStep  当前步骤
      */
     public void pushErrorResult(ExecutionContext context, String errorMessage, int currentStep) {
         if (!context.isStreaming() || context.getSseEmitter() == null) {
             return;
         }
-        
+
         try {
             ResultMessage errorResult = new ResultMessage(MessageType.SYSTEM, currentStep, errorMessage);
             pushSingleResult(context.getSseEmitter(), errorResult, context.getExecutionId());
@@ -95,13 +95,13 @@ public class StreamingResultHandler {
             log.error("推送错误结果失败 - 执行ID: {}", context.getExecutionId(), e);
         }
     }
-    
+
     /**
      * 设置SSE连接的回调处理
      *
-     * @param emitter SSE发射器
-     * @param agentName 智能体名称
-     * @param executionId 执行ID
+     * @param emitter         SSE发射器
+     * @param agentName       智能体名称
+     * @param executionId     执行ID
      * @param cleanupCallback 清理回调
      */
     public void setupSseCallbacks(SseEmitter emitter, String agentName, String executionId, Runnable cleanupCallback) {
@@ -111,14 +111,14 @@ public class StreamingResultHandler {
                 cleanupCallback.run();
             }
         });
-        
+
         emitter.onCompletion(() -> {
             log.debug("SSE连接完成 - Agent: {}, 执行ID: {}", agentName, executionId);
             if (cleanupCallback != null) {
                 cleanupCallback.run();
             }
         });
-        
+
         emitter.onError((ex) -> {
             log.error("SSE连接错误 - Agent: {}, 执行ID: {}", agentName, executionId, ex);
             if (cleanupCallback != null) {
@@ -126,11 +126,11 @@ public class StreamingResultHandler {
             }
         });
     }
-    
+
     /**
      * 安全关闭SSE连接
      *
-     * @param emitter SSE发射器
+     * @param emitter     SSE发射器
      * @param executionId 执行ID
      */
     public void safeComplete(SseEmitter emitter, String executionId) {

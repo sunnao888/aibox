@@ -27,7 +27,6 @@ public class ManusController {
     @PostMapping(value = "/jManus", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @Operation(summary = "JManus 智能助手 - SSE 流式响应")
     public SseEmitter jManus(@RequestBody ManusReqVO reqVO) {
-        log.info("开始处理 JManus SSE 请求，用户消息: {}", reqVO.getUserMessage());
         return manusService.jManusStream(reqVO);
     }
 }

@@ -116,7 +116,6 @@ public abstract class BaseAgent implements AgentExecutor {
         setupLoggingContext(context);
 
         try {
-            log.info("开始执行智能体任务 - 用户消息长度: {}", userMessage.length());
 
             validateInput(userMessage);
             initializeExecution(userMessage, context);
