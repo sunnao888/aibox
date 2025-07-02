@@ -3,15 +3,12 @@ package com.sunnao.aibox.module.biz.service.manus;
 import com.sunnao.aibox.module.biz.ai.agent.manus.JManus;
 import com.sunnao.aibox.module.biz.ai.agent.manus.manager.UserAgentNameManager;
 import com.sunnao.aibox.module.biz.ai.agent.manus.model.AgentName;
-import com.sunnao.aibox.module.biz.ai.agent.manus.model.ResultMessage;
-import com.sunnao.aibox.module.biz.controller.admin.manus.vo.ManusReqVO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -25,12 +22,7 @@ public class ManusServiceImpl implements ManusService {
     private UserAgentNameManager userAgentNameManager;
 
     @Override
-    public List<ResultMessage> jManus(ManusReqVO reqVO) {
-        return jManus.run(reqVO.getUserMessage());
-    }
-
-    @Override
-    public SseEmitter jManusStream(ManusReqVO reqVO) {
+    public SseEmitter jManusStream(String userMessage) {
 
         // 绑定用户和智能体名称
         userAgentNameManager.bind(AgentName.JMANUS);
@@ -42,7 +34,7 @@ public class ManusServiceImpl implements ManusService {
         CompletableFuture.runAsync(() -> {
             try {
                 // 使用 BaseAgent 的新 SSE 方法执行任务
-                jManus.runWithSseEmitter(reqVO.getUserMessage(), emitter);
+                jManus.runWithSseEmitter(userMessage, emitter);
                 // 完成 SSE 连接
                 emitter.complete();
             } catch (Exception e) {
