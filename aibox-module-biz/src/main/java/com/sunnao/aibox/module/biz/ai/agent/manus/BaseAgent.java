@@ -71,21 +71,6 @@ public abstract class BaseAgent implements AgentExecutor {
     }
 
     /**
-     * 运行智能体执行任务
-     *
-     * @param userMessage 用户输入的提示词，不能为空或空白字符串
-     * @return 执行结果消息列表，包含每个步骤的执行结果
-     * @throws ServiceException 当用户提示词为空时抛出 USER_PROMPT_NOT_EXISTS
-     * @throws ServiceException 当智能体正在运行时抛出 AGENT_IS_RUNNING
-     * @throws ServiceException 当执行过程中发生系统错误时抛出相应错误码
-     * @since 2025-06-28
-     */
-    public List<ResultMessage> run(String userMessage) {
-        ExecutionContext context = ExecutionContext.createNormal();
-        return execute(userMessage, context);
-    }
-
-    /**
      * 运行智能体并通过 SSE 实时推送结果
      *
      * @param userMessage 用户输入的提示词，不能为空或空白字符串

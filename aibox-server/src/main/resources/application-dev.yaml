@@ -60,6 +60,17 @@ spring:
   ai:
     dashscope:
       api-key: ${DASH_SCOPE_API_KEY}
+    alibaba:
+      toolcalling:
+        time:
+          enabled: true
+        weather:
+          enabled: true
+          api-key:
+        baidu:
+          search:
+            enabled: true
+            max-results: 5
 
 --- #################### 定时任务相关配置 ####################
 

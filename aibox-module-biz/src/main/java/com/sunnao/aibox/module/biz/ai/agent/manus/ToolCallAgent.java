@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 import com.sunnao.aibox.module.biz.ai.agent.manus.handler.StreamingResultHandler;
 import com.sunnao.aibox.module.biz.ai.agent.manus.manager.AgentStateManager;
+import com.sunnao.aibox.module.biz.ai.agent.manus.model.AgentState;
 import com.sunnao.aibox.module.biz.ai.agent.manus.model.MessageType;
 import com.sunnao.aibox.module.biz.ai.agent.manus.model.ResultMessage;
 import lombok.Getter;
@@ -104,5 +105,10 @@ public class ToolCallAgent extends ReActAgent {
                             new ResultMessage(MessageType.SYSTEM, stateManager.getCurrentStep(config.getName()), "调用" + name));
                 }
         );
+        boolean terminate = toolResponseMessage.getResponses().stream()
+                .anyMatch(response -> "终止工具".equals(response.name()));
+        if (terminate) {
+            stateManager.setState(config.getName(), AgentState.FINISHED);
+        }
     }
 }
