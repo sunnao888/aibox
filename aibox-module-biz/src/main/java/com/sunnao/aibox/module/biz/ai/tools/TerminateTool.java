@@ -3,8 +3,6 @@ package com.sunnao.aibox.module.biz.ai.tools;
 import com.sunnao.aibox.module.biz.ai.agent.manus.manager.AgentStateManager;
 import com.sunnao.aibox.module.biz.ai.agent.manus.manager.UserAgentNameManager;
 import com.sunnao.aibox.module.biz.ai.agent.manus.model.AgentState;
-import com.sunnao.aibox.module.biz.ai.agent.manus.model.MessageType;
-import com.sunnao.aibox.module.biz.ai.agent.manus.model.ResultMessage;
 import jakarta.annotation.Resource;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Component;
@@ -22,10 +20,9 @@ public class TerminateTool {
     @Tool(description = """  
             当请求被满足或者助手无法继续完成任务时，终止互动。
             当你完成所有任务后，调用这个工具来结束工作。
-            """)
+            """, name = "终止工具")
     public String doTerminate() {
         agentStateManager.setState(userAgentNameManager.get(), AgentState.FINISHED);
-        agentStateManager.addResult(userAgentNameManager.get(), new ResultMessage(MessageType.SYSTEM, agentStateManager.getCurrentStep(userAgentNameManager.get()), "调用终止工具，结束本次任务"));
-        return "结束任务成功，请回复end";
+        return "结束任务成功";
     }
 }

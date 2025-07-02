@@ -20,6 +20,7 @@ public class JManus extends ToolCallAgent {
         AgentConfiguration configuration = AgentConfiguration.builder()
                 .name(AgentName.JMANUS)
                 .systemPrompt(JManusPrompt.SYSTEM_PROMPT)
+                .nextStepPrompt(JManusPrompt.NEXT_STEP_PROMPT)
                 .maxStep(10)
                 .build();
 

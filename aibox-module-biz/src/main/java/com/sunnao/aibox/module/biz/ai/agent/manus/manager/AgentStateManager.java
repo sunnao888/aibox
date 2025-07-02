@@ -113,6 +113,14 @@ public class AgentStateManager {
         userState.getMemory().add(message);
     }
 
+    /**
+     * 批量添加记忆
+     */
+    public void addMemories(String agentName, List<Message> messages) {
+        UserAgentState userState = getUserState(agentName);
+        userState.getMemory().addAll(messages);
+    }
+
     public void clearMemory(String agentName) {
         UserAgentState userState = getUserState(agentName);
         userState.getMemory().clear();
